@@ -1,0 +1,27 @@
+package com.newswathi;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+
+@Component
+@PropertySource(value =  "classpath:application.properties")
+public class School {
+	
+	@Value("${school-name:Default}")
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "School [name=" + name + "]";
+	}
+	
+}
