@@ -1,5 +1,6 @@
 package com.newswathi;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -11,13 +12,19 @@ import org.springframework.validation.ObjectError;
 public class StudentApplication {
 
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("application-context.xml");
 		Student studentInfo = (Student) ctx.getBean("studInfo");
 
 		StudentInput sinput = new StudentInput();
 		sinput.studInput(studentInfo);
+		
+		StudentDB studentdb = new StudentDB();
+		studentdb.insert(studentInfo);
+		Student s = studentdb.find();
+		System.out.println(s);
+		
 
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("studName", studentInfo.getStudName());

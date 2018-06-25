@@ -8,9 +8,14 @@ import org.springframework.stereotype.Component;
 @PropertySource(value =  "classpath:application.properties")
 public class School {
 	
-	@Value("${school-name:Default}")
+	
 	private String name;
-
+	public School() {
+		
+	}
+	public School(@Value("${school-name:Default}") String name) {
+		this.name=name;
+	}
 	public String getName() {
 		return name;
 	}
