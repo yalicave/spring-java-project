@@ -5,11 +5,16 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import org.springframework.stereotype.Component;
 
 import com.mysql.jdbc.PreparedStatement;
 
-public class StudentDB {
+@Component("studentDb")
+public class StudentJDBC implements StuentDAO {
 
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -17,10 +22,10 @@ public class StudentDB {
 	Connection conn = null;
 
 	// Database credentials
-	static final String USER = "****";
-	static final String PASS = "****";
+	static final String USER = "root";
+	static final String PASS = "@24kulavayal92";
 
-	public StudentDB() {
+	public StudentJDBC() {
 		try {
 			init();
 		} catch (ClassNotFoundException e) {
@@ -42,7 +47,7 @@ public class StudentDB {
 
 	}
 
-	public Student find() {
+	public List<Student> find() {
 		Statement stmt = null;
 		try {
 
@@ -52,19 +57,31 @@ public class StudentDB {
 			String sql;
 			sql = "SELECT Student_Name, Student_Age, Student_Roll_No, School_Name FROM Student";
 			ResultSet rs = stmt.executeQuery(sql);
-
+			
+			List<Student> result = new ArrayList<Student>();
 			// STEP 5: Extract data from result set
 			Student student = null;
 			while (rs.next()) {
-			 
+				// Retrieve by column name
+				String studName = rs.getString("Student_Name");
+				int studAge = rs.getInt("Student_Age");
+				int studRollNo = rs.getInt("Student_Roll_No");
+				String school = rs.getString("School_Name");
 
+				// Display values
+				student = new Student();
+				student.setStudName(studName);
+				student.setStudAge(studAge);
+				student.setStudRollNo(studRollNo);
+				student.setSchool(new School(school));
+				result.add(student);
 			}
 
 			// STEP 6: Clean-up environment
 			rs.close();
 			stmt.close();
 			conn.close();
-			return student;
+			return result;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
@@ -90,9 +107,17 @@ public class StudentDB {
 	}
 
 	public void insert(Student student) throws SQLException {
-		String sql = "INSERT INTO Student VALUES (" + new Random().nextInt(1000) + ",'" + student.getStudName() + "','"
-				+ student.getStudAge() + "','" + student.getStudRollNo() + "','" + student.getSchool() + "')";
+		student.setStudName("One");
+		student.setStudAge(1);
+		student.setStudRollNo(20);
+		String sql = "INSERT INTO Student (id,Student_Name,Student_Age,"
+				+ "Student_Roll_No,School_Name) VALUES (?,'?',?,?,'?')";
 		java.sql.PreparedStatement preparedStatement = conn.prepareStatement(sql);
+		preparedStatement.setInt(1, 10);
+		preparedStatement.setString(2, student.getStudName());
+		preparedStatement.setInt(3, student.getStudAge());
+		preparedStatement.setInt(4, student.getStudRollNo());
+		preparedStatement.setString(5, student.getStudName());
 
 		preparedStatement.executeUpdate(sql);
 		System.out.print("Student Name: " + student.getStudName());
