@@ -36,7 +36,7 @@ public class Configuration {
 
 		// Database credentials
 		String username = "root";
-		final String password = "@24kulavayal92";
+		final String password = "****";
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(jdbcDriver);
 		dataSource.setUrl(dbUrl);

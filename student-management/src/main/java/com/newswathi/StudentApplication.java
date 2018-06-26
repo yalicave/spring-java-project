@@ -10,8 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.ObjectError;
 
-import com.newswathi.dao.StudentJDBCTemplate;
-import com.newswathi.dao.StuentDAO;
+import com.newswathi.dao.StudentDAOImpl;
 
 public class StudentApplication {
 
@@ -24,7 +23,7 @@ public class StudentApplication {
 		StudentInput sinput = new StudentInput();
 		sinput.studInput(studentInfo);
 		
-		StuentDAO studentdb = (StudentJDBCTemplate) ctx.getBean("studentHibernateDAOImpl");
+		StudentDAOImpl studentdb = (StudentDAOImpl) ctx.getBean("studentHibernateDAOImpl");
 		studentdb.insert(studentInfo);
 		List<Student> students = studentdb.find();
 		
