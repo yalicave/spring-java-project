@@ -1,4 +1,4 @@
-package com.newswathi;
+package com.newswathi.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,6 +12,8 @@ import java.util.Random;
 import org.springframework.stereotype.Component;
 
 import com.mysql.jdbc.PreparedStatement;
+import com.newswathi.School;
+import com.newswathi.Student;
 
 @Component("studentDb")
 public class StudentJDBC implements StuentDAO {
@@ -22,8 +24,8 @@ public class StudentJDBC implements StuentDAO {
 	Connection conn = null;
 
 	// Database credentials
-	static final String USER = "root";
-	static final String PASS = "@24kulavayal92";
+	static final String USER = "****";
+	static final String PASS = "****";
 
 	public StudentJDBC() {
 		try {
