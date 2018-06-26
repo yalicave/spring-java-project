@@ -2,6 +2,7 @@ package com.newswathi;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -20,11 +21,13 @@ public class StudentApplication {
 		StudentInput sinput = new StudentInput();
 		sinput.studInput(studentInfo);
 		
-		StudentDB studentdb = new StudentDB();
+		StuentDAO studentdb = (StudentJDBCTemplate) ctx.getBean("studentJDBCTemplate");
 		studentdb.insert(studentInfo);
-		Student s = studentdb.find();
-		System.out.println(s);
+		List<Student> students = studentdb.find();
 		
+		for(Student s : students) {
+			System.out.println(s);
+		}
 
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("studName", studentInfo.getStudName());
