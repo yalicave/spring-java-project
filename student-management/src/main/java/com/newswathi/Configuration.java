@@ -1,7 +1,5 @@
 package com.newswathi;
 
-import java.sql.Connection;
-
 import javax.sql.DataSource;
 
 import org.springframework.context.MessageSource;
@@ -10,10 +8,12 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import ch.qos.logback.core.db.DriverManagerConnectionSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @org.springframework.context.annotation.Configuration
+@EnableTransactionManagement
 public class Configuration {
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -48,5 +48,20 @@ public class Configuration {
 	@Bean
 	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
 		return new JdbcTemplate(dataSource());
+	}
+	
+	@Bean(name="entityManager")
+	public LocalContainerEntityManagerFactoryBean entityManager() {
+		LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+		factoryBean.setDataSource(dataSource());
+		factoryBean.setPersistenceUnitName("LOCAL_PERSISTENCE");
+		return factoryBean;
+	}
+
+	@Bean
+	public JpaTransactionManager geJpaTransactionManager() {
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		transactionManager.setEntityManagerFactory(entityManager().getObject());
+		return transactionManager;
 	}
 }
