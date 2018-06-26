@@ -15,7 +15,7 @@ import com.mysql.jdbc.PreparedStatement;
 import com.newswathi.School;
 import com.newswathi.Student;
 
-@Component("studentDb")
+//@Component("studentDb")
 public class StudentJDBC implements StuentDAO {
 
 	// JDBC driver name and database URL

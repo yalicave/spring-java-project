@@ -3,6 +3,7 @@ package com.newswathi.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import com.newswathi.School;
 import com.newswathi.Student;
 
 @Entity
+@Table(name="STUDENT")
 public class StudentEntity implements Validator{
 	@Id
 	private Integer id;
