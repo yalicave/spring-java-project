@@ -11,6 +11,7 @@ import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.ObjectError;
 
 import com.newswathi.dao.StudentDAOImpl;
+import com.newswathi.service.StudentService;
 
 public class StudentApplication {
 
@@ -23,9 +24,9 @@ public class StudentApplication {
 		StudentInput sinput = new StudentInput();
 		sinput.studInput(studentInfo);
 		
-		StudentDAOImpl studentdb = (StudentDAOImpl) ctx.getBean("studentHibernateDAOImpl");
-		studentdb.insert(studentInfo);
-		List<Student> students = studentdb.find();
+		StudentService studentdb = (StudentService) ctx.getBean("studentService");
+		//studentdb.insert(studentInfo);
+		List<Student> students = studentdb.findByName(studentInfo.getStudName());
 		
 		for(Student s : students) {
 			System.out.println(s);
@@ -39,6 +40,7 @@ public class StudentApplication {
 		MapBindingResult errors = new MapBindingResult(map, Student.class.getName());
 		studentInfo.validate(studentInfo, errors);
 		System.out.println(errors.getAllErrors().size());
+		
 		for (ObjectError error : errors.getAllErrors()) {
 			String name = ctx.getMessage(error.getCode(), new Object[] { 28, "anand swathi" }, Locale.US);
 			System.out.println(name);
