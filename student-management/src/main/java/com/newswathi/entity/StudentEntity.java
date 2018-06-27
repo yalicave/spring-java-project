@@ -2,9 +2,12 @@ package com.newswathi.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -18,6 +21,7 @@ import com.newswathi.Student;
 @Table(name="STUDENT")
 public class StudentEntity implements Validator{
 	@Id
+	@GeneratedValue
 	private Integer id;
 	
 	@Column(name="Student_Name")
@@ -26,8 +30,8 @@ public class StudentEntity implements Validator{
 	private int studAge;
 	@Column(name="Student_Roll_No")
 	private int studRollNo;
-	@Column(name="School_Name")
-	private String school;
+	@ManyToOne
+	private SchoolEntity school;
 	
 	public String getStudName() {
 		return studName;
@@ -48,10 +52,10 @@ public class StudentEntity implements Validator{
 		this.studRollNo = studRollNo;
 	}
  
-	public String getSchool() {
+	public SchoolEntity getSchool() {
 		return school;
 	}
-	public void setSchool(String school) {
+	public void setSchool(SchoolEntity school) {
 		this.school = school;
 	}
 	@Override
@@ -81,9 +85,11 @@ public class StudentEntity implements Validator{
 		student.setStudName(this.getStudName());
 		student.setStudRollNo(this.getStudRollNo());
 		student.setStudAge(this.getStudAge());
-		School school = new School();
-		school.setName(this.getSchool());
-		student.setSchool(school);
+		SchoolEntity schoolEntity = this.getSchool();
+		if(schoolEntity!=null) {
+			student.setSchool(schoolEntity.toSchool());
+		}
 		return student;
 	}
+	
 }

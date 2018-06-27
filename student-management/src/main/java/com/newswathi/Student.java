@@ -6,6 +6,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import com.newswathi.entity.SchoolEntity;
+import com.newswathi.entity.StudentEntity;
+
 @Component("studInfo")
 public class Student implements Validator{
 	
@@ -61,6 +64,20 @@ public class Student implements Validator{
 			errors.reject("student.age.invalid");
 		}
 		
+	}
+	
+	public StudentEntity toStudentEntity() {
+		StudentEntity studentEntity = new StudentEntity();
+		studentEntity.setStudName(this.getStudName());
+		studentEntity.setStudRollNo(this.getStudRollNo());
+		studentEntity.setStudAge(this.getStudAge());
+		School school = this.getSchool();
+		if(school!=null) {
+			SchoolEntity schoolEntity= new SchoolEntity();
+			schoolEntity.setsName(school.getName());
+			studentEntity.setSchool(schoolEntity);
+		}
+		return studentEntity;
 	}
 
 }
